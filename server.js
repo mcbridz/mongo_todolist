@@ -16,29 +16,52 @@ module.exports = function (deps) {
 
     const client = new MongoClient(url)
 
+
     client.connect((err) => {
         assert.equal(null, err)
         console.log('Connected successfully to database.')
 
         const db = client.db(dbname)
 
-        client.close()
     })
 
     app.get('/todos_data', (req, res) => {
-
+        client.connect((err) => {
+            const db = client.db(dbname)
+            const collection = db.collection('todos')
+            collection.find({}).toArray((err, data) => {
+                console.log('Todos retrieved')
+                res.json(data)
+            })
+        })
     })
 
-    app.post('/todos_data', (req, res) => {
-
+    app.post('/mark_done', (req, res) => {
+        const id = req.body.id
+        console.log('/////////////////id//////////////////')
+        console.log(id)
+        console.log('/////////////////id//////////////////')
+        client.connect((err) => {
+            const db = client.db(dbname)
+            const collection = db.collection('todos')
+            collection.updateOne({ 'id': id }, { $set: { 'done': true } }, (err, results) => {
+                console.log(err)
+                // console.log(results)
+                console.log('Todo updated')
+                res.end('Todo updated')
+            })
+        })
     })
 
     app.post('/new_todo', (req, res) => {
-        const newTodo = JSON.parse(req.body)
+        const newTodo = req.body
         client.connect((err) => {
-
-
-            client.close()
+            const db = client.db(dbname)
+            const collection = db.collection('todos')
+            collection.insertOne(newTodo, (err, result) => {
+                if (err) console.log(err)
+                console.log(result)
+            })
         })
         res.end('New todo stored successfully.')
     })

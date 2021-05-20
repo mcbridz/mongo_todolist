@@ -23,6 +23,19 @@ const sendNewTodo = (todo) => {
 }
 function App() {
   const [todos, setTodos] = useState([])
+
+  const markDone = (id) => {
+    return () => {
+      console.log(id)
+      axios.post(`http://localhost:8000/mark_done`, { id: id })
+        .then(res => {
+          console.log(res)
+          todos[id].done = true
+          let newTodos = [...todos]
+          setTodos(newTodos)
+        })
+    }
+  }
   useEffect(() => {
     axios.get(`http://localhost:8000/todos_data`)
       .then(res => {
@@ -49,13 +62,13 @@ function App() {
         </nav>
         <Switch>
           <Route path='/todos'>
-            <Todos type='Not Done' sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} />
+            <Todos type='Not Done' sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} markDone={markDone} />
           </Route>
           <Route path='/done'>
-            <Todos type='Done' sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} />
+            <Todos type='Done' sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} markDone={markDone} />
           </Route>
           <Route path='/all'>
-            <Todos type='' sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} />
+            <Todos type='' sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} markDone={markDone} />
           </Route>
         </Switch>
       </div>
