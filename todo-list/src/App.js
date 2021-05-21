@@ -7,6 +7,7 @@ import {
   Link
 } from 'react-router-dom'
 import Todos from './Todos'
+import Login from './Login'
 const sendTodos = (todosArr) => {
   axios.post(`http://localhost:8000/todos_data`, todosArr)
     .then(res => {
@@ -23,6 +24,7 @@ const sendNewTodo = (todo) => {
 }
 function App() {
   const [todos, setTodos] = useState([])
+  const [token, setToken] = useState({ token: '' })
 
   const markDone = (id) => {
     return () => {
@@ -58,6 +60,9 @@ function App() {
             <li>
               <Link to='/all'>All</Link>
             </li>
+            <li>
+              <Link to='/login'>Login</Link>
+            </li>
           </ul>
         </nav>
         <Switch>
@@ -69,6 +74,9 @@ function App() {
           </Route>
           <Route path='/all'>
             <Todos type='' sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} markDone={markDone} />
+          </Route>
+          <Route path='/login'>
+            <Login setToken={setToken} />
           </Route>
         </Switch>
       </div>

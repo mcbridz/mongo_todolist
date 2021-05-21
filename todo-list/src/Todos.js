@@ -2,15 +2,6 @@ import React from 'react'
 import Todo from './Todo'
 import NewTodo from './NewTodo'
 
-// const markDone = (index, todoArr, setTodos, callback) => {
-//     // console.log('DING')
-//     todoArr[index].done = true
-//     let output = [...todoArr]
-//     // console.log(todoArr)
-//     setTodos(output)
-//     callback(output)
-// }
-
 
 const Todos = (props) => {
     let todos = props.todos

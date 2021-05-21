@@ -9,11 +9,11 @@ const Todo = (props) => {
     let markDone = props.markDone
     // console.log('todos')
     // console.log(todos)
-    let setTodos = props.setTodos
-    let todos = props.todos
+    // let setTodos = props.setTodos
+    // let todos = props.todos
     // console.log('displayTodos')
     // console.log(displayTodos)
-    let sendTodos = props.sendTodos
+    // let sendTodos = props.sendTodos
     return (
         <li>
             <div>{text}{(props.done) ? '' : <button onClick={markDone(id)}>Done</button>}</div>
