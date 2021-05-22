@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 
 function Login(props) {
@@ -6,6 +7,7 @@ function Login(props) {
     let [password, setPassword] = useState('')
     let setUsernameNow = props.setUsername
     const setToken = props.setToken
+    let history = useHistory()
     const handleUsernameChange = (evt) => {
         let newUsername = evt.target.value
         setUsername(newUsername)
@@ -23,6 +25,7 @@ function Login(props) {
             // console.log(res.data.token)
             setToken(res.data.token)
             setUsernameNow(username)
+            history.push('/todos')
         })
     }
     return (

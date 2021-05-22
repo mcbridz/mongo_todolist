@@ -9,22 +9,24 @@ const Todo = require('../Models').Todo
 
 router.get('/todos_data', (req, res) => {
     const authorization = req.header('Authorization') || ''
+    // console.log('Getting auth from :')
+    // console.log(authorization)
     const [type, token] = authorization.split(' ')
     if (type === 'Bearer' && jwt.verify(token, key)) {
+        // console.log('Verified token')
         const payload = jwt.decode(token, key)
-        User.findOne({ _id: payload.id }, (err, user) => {
+        // console.log('User id: ' + payload._id)
+        User.findOne({ _id: payload._id }, (err, user) => {
             if (err) return res.status(500).send(err)
             if (!user) return res.status(400).send('not a valid user')
-            res.json(user.getTodos())
+            Todo.find({ username: user.username }, (err, todos) => {
+                console.log('User\'s todos: ' + todos.length)
+                res.json(todos)
+            })
         })
     } else {
         return res.status(400).send('unauthorized')
     }
-    // Todo.find({}, (err, data) => {
-    //     if (err) console.log(err)
-    //     console.log(data)
-    //     res.json(data)
-    // })
 })
 
 router.post('/mark_done', (req, res) => {
@@ -32,34 +34,30 @@ router.post('/mark_done', (req, res) => {
     const [type, token] = authorization.split(' ')
     if (type === 'Bearer' && jwt.verify(token, key)) {
         const payload = jwt.decode(token, key)
-        User.findOne({ _id: payload.id }, (err, user) => {
+        User.findOne({ _id: payload._id }, (err, user) => {
             if (err) return res.status(500).send(err)
             if (!user) return res.status(400).send('not a valid user')
             user.markDone(req.body.id)
+            res.status(202).send('Todo Updated')
         })
     } else {
         return res.status(400).send('unauthorized')
     }
-
-    // const id = req.body.id
-    // Todo.find({ id: id }, (err, todo) => {
-    //     if (err) console.log(err)
-    //     todo.done = true
-    //     todo.save((err, data) => {
-    //         res.end('Todo updated')
-    //     })
-    // })
 })
 
 router.post('/new_todo', (req, res) => {
+    console.log('Post request received')
     const authorization = req.header('Authorization') || ''
     const [type, token] = authorization.split(' ')
     if (type === 'Bearer' && jwt.verify(token, key)) {
+        console.log('Verified token')
         const payload = jwt.decode(token, key)
-        User.findOne({ _id: payload.id }, (err, user) => {
+        User.findOne({ _id: payload._id }, (err, user) => {
             if (err) return res.status(500).send(err)
             if (!user) return res.status(400).send('not a valid user')
             let newTodo = req.body
+            console.log('Adding new todo')
+            console.log(newTodo)
             newTodo = new Todo(newTodo)
             newTodo.save((err, data) => {
                 if (err) return res.status(500).send(err)
@@ -72,14 +70,6 @@ router.post('/new_todo', (req, res) => {
         return res.status(400).send('unauthorized')
     }
 
-
-
-    // let newTodo = req.body
-    // newTodo = new Todo(newTodo)
-    // newTodo.save((err, data) => {
-    //     console.log('New todo saved.')
-    // })
-    // res.end('New todo stored successfully.')
 })
 
 module.exports = router

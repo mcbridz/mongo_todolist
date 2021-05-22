@@ -9,43 +9,46 @@ import {
 import Todos from './Todos'
 import Login from './Login'
 import Register from './Register'
-const sendTodos = (todosArr) => {
-  axios.post(`http://localhost:8000/todos_data`, todosArr)
-    .then(res => {
-      console.log(res)
-    })
-}
+// const sendTodos = (todosArr) => {
+//   axios.post(`http://localhost:8000/todos_data`, todosArr)
+//     .then(res => {
+//       console.log(res)
+//     })
+// }
 const sendNewTodo = (todo, token) => {
   console.log('Sending New Todo')
   console.log(todo)
-  axios.post(`http://localhost:8000/new_todo`, todo, { headers: { Authorization: token } })
+  axios.post(`http://localhost:8000/new_todo`, todo, { headers: { Authorization: `Bearer ${token}` } })
     .then(res => {
       console.log(res)
     })
 }
 function App() {
   const [todos, setTodos] = useState([])
-  const [token, setToken] = useState({ token: '' })
+  const [token, setToken] = useState('')
   const [username, setUsername] = useState(null)
 
-  const markDone = (id) => {
+  const markDone = (id, token) => {
     return () => {
-      console.log(id)
-      axios.post(`http://localhost:8000/mark_done`, { id: id }, { headers: { Authorization: token } })
+      // console.log(id)
+      axios.post(`http://localhost:8000/mark_done`, { id: id }, { headers: { Authorization: `Bearer ${token}` } })
         .then(res => {
           console.log(res)
           todos[id].done = true
           let newTodos = [...todos]
+          console.log('//////////////////')
+          console.log(newTodos)
           setTodos(newTodos)
         })
     }
   }
   useEffect(() => {
-    if (token) {
-      axios.get(`http://localhost:8000/todos_data`, { headers: { Authorization: token } })
+    // console.log('token ' + token)
+    if (token !== '') {
+      axios.get(`http://localhost:8000/todos_data`, { headers: { Authorization: `Bearer ${token}` } })
         .then(res => {
           const todo_data = res.data
-          // console.log(todo_data)
+          console.log(todo_data)
           setTodos(todo_data)
         })
     }
@@ -74,13 +77,13 @@ function App() {
         </nav>
         <Switch>
           <Route path='/todos'>
-            <Todos type='Not Done' token={token} sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />
+            <Todos type='Not Done' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />
           </Route>
           <Route path='/done'>
-            <Todos type='Done' token={token} sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />
+            <Todos type='Done' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />
           </Route>
           <Route path='/all'>
-            <Todos type='' token={token} sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />
+            <Todos type='' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />
           </Route>
           <Route path='/login'>
             <Login setToken={setToken} setUsername={setUsername} />

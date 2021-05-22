@@ -9,7 +9,7 @@ const Todo = (props) => {
     let token = props.token
     return (
         <li>
-            <div>{text}{(props.done) ? '' : <button onClick={markDone(id)}>Done</button>}</div>
+            <div>{text}{(props.done) ? '' : <button onClick={markDone(id, token)}>Done</button>}</div>
             <div>{date.toString()}</div>
         </li>
     )

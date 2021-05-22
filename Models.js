@@ -55,7 +55,7 @@ userSchema.methods.comparePassword = function (plainTextPassword) {
 }
 
 userSchema.methods.getTodos = function () {
-    return this.todos
+    return Todo.find({ username: this.username })
 }
 
 userSchema.methods.markDone = async function (id) {
