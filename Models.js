@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 
 const Schema = mongoose.Schema
 
@@ -6,7 +7,8 @@ const todoSchema = new Schema({
     text: String,
     done: Boolean,
     date: String,
-    id: Number
+    id: Number,
+    username: String
 })
 
 const Todo = mongoose.model('Todo', todoSchema)
@@ -41,7 +43,8 @@ userSchema.methods.sanitize = function () {
 
 userSchema.methods.hashPassword = function (plainTextPassword) {
     const user = this
-    return bcrypt.hash(plainTextPassword, 4).then(hash => {
+    let randomSalt = Math.floor(Math.random() * 4 + 2)
+    return bcrypt.hash(plainTextPassword, randomSalt).then(hash => {
         user.password = hash
     })
 }
@@ -49,6 +52,29 @@ userSchema.methods.hashPassword = function (plainTextPassword) {
 userSchema.methods.comparePassword = function (plainTextPassword) {
     const user = this
     return bcrypt.compare(plainTextPassword, user.password)
+}
+
+userSchema.methods.getTodos = function () {
+    return this.todos
+}
+
+userSchema.methods.markDone = async function (id) {
+    let output = false
+    await Todo.findOneAndUpdate({ username: this.username, id: id }, { "$set": { done: true } }, { returnNewDocument: true })
+        .then(updatedTodo => {
+            if (updatedTodo) {
+                console.log('todo updated successfully')
+            } else {
+                console.log('no todo found')
+                output = false
+            }
+        })
+        .catch(err => console.log(`Failed to find and update todo: ${err}`))
+    return output
+}
+
+userSchema.methods.addTodo = function (newTodo) {
+    this.todos.push(newTodo)
 }
 
 const User = mongoose.model('User', userSchema)

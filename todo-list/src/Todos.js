@@ -10,6 +10,7 @@ const Todos = (props) => {
     let sendTodos = props.sendTodos
     let sendNewTodo = props.sendNewTodo
     let markDone = props.markDone
+    let token = props.token
     if (type === 'Not Done') {
         todos = todos.filter((todo) => !todo.done)
     } else if (type === 'Done') {
@@ -31,13 +32,17 @@ const Todos = (props) => {
                         sendTodos={sendTodos}
                         setTodos={setTodos}
                         todos={props.todos}
-                        done={todo.done} />)
+                        done={todo.done}
+                        token={token}
+                    />)
                 })}
             </ul>
             {(type === 'Not Done') ? <NewTodo
                 todos={props.todos}
                 setTodos={setTodos}
                 sendNewTodo={sendNewTodo}
+                token={token}
+                username={props.username}
             /> : ''}
         </div>
     )

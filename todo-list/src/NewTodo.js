@@ -5,27 +5,27 @@ const NewTodo = (props) => {
     let setTodos = props.setTodos
     let newKey = todos.length
     let sendNewTodo = props.sendNewTodo
+    let token = props.token
     const [newTodo, setNewTodo] = useState({
         text: '',
         date: new Date(),
         done: false,
-        id: newKey
+        id: newKey,
+        username: props.username
     })
     const handleSubmit = (evt) => {
         evt.preventDefault()
         // console.log('new TODO')
         // console.log(newTodo)
-        //function for sending todo data
-        //TO-CODE
-        //
         setTodos([...todos, newTodo])
         newKey++
-        sendNewTodo(newTodo)
+        sendNewTodo(newTodo, token)
         setNewTodo({
             text: '',
             date: new Date(),
             done: false,
-            id: newKey
+            id: newKey,
+            username: props.username
         })
     }
     const handleChange = (evt) => {
@@ -34,7 +34,8 @@ const NewTodo = (props) => {
             text: value,
             date: new Date(),
             done: false,
-            id: newKey
+            id: newKey,
+            username: props.username
         })
     }
     return (

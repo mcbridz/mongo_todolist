@@ -8,16 +8,17 @@ import {
 } from 'react-router-dom'
 import Todos from './Todos'
 import Login from './Login'
+import Register from './Register'
 const sendTodos = (todosArr) => {
   axios.post(`http://localhost:8000/todos_data`, todosArr)
     .then(res => {
       console.log(res)
     })
 }
-const sendNewTodo = (todo) => {
+const sendNewTodo = (todo, token) => {
   console.log('Sending New Todo')
   console.log(todo)
-  axios.post(`http://localhost:8000/new_todo`, todo)
+  axios.post(`http://localhost:8000/new_todo`, todo, { headers: { Authorization: token } })
     .then(res => {
       console.log(res)
     })
@@ -25,11 +26,12 @@ const sendNewTodo = (todo) => {
 function App() {
   const [todos, setTodos] = useState([])
   const [token, setToken] = useState({ token: '' })
+  const [username, setUsername] = useState(null)
 
   const markDone = (id) => {
     return () => {
       console.log(id)
-      axios.post(`http://localhost:8000/mark_done`, { id: id })
+      axios.post(`http://localhost:8000/mark_done`, { id: id }, { headers: { Authorization: token } })
         .then(res => {
           console.log(res)
           todos[id].done = true
@@ -39,13 +41,15 @@ function App() {
     }
   }
   useEffect(() => {
-    axios.get(`http://localhost:8000/todos_data`)
-      .then(res => {
-        const todo_data = res.data
-        // console.log(todo_data)
-        setTodos(todo_data)
-      })
-  }, [])
+    if (token) {
+      axios.get(`http://localhost:8000/todos_data`, { headers: { Authorization: token } })
+        .then(res => {
+          const todo_data = res.data
+          // console.log(todo_data)
+          setTodos(todo_data)
+        })
+    }
+  }, [token])
   return (
     <Router>
       <div>
@@ -63,20 +67,26 @@ function App() {
             <li>
               <Link to='/login'>Login</Link>
             </li>
+            <li>
+              <Link to='/register'>Register</Link>
+            </li>
           </ul>
         </nav>
         <Switch>
           <Route path='/todos'>
-            <Todos type='Not Done' sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} markDone={markDone} />
+            <Todos type='Not Done' token={token} sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />
           </Route>
           <Route path='/done'>
-            <Todos type='Done' sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} markDone={markDone} />
+            <Todos type='Done' token={token} sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />
           </Route>
           <Route path='/all'>
-            <Todos type='' sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} markDone={markDone} />
+            <Todos type='' token={token} sendNewTodo={sendNewTodo} sendTodos={sendTodos} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />
           </Route>
           <Route path='/login'>
-            <Login setToken={setToken} />
+            <Login setToken={setToken} setUsername={setUsername} />
+          </Route>
+          <Route path='/register'>
+            <Register />
           </Route>
         </Switch>
       </div>
