@@ -4,7 +4,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from 'react-router-dom'
 import Todos from './Todos'
 import Login from './Login'
@@ -36,11 +37,22 @@ function App() {
           console.log(res)
           todos[id].done = true
           let newTodos = [...todos]
-          console.log('//////////////////')
-          console.log(newTodos)
+          // console.log('//////////////////')
+          // console.log(newTodos)
           setTodos(newTodos)
         })
     }
+  }
+  const logout = () => {
+    setToken('')
+    setTodos([])
+  }
+  const processRedirect = (input) => {
+    // console.log(token)
+    if (!token) {
+      input = <Redirect to='/login' setToken={setToken} setUsername={setUsername} />
+    }
+    return input
   }
   useEffect(() => {
     // console.log('token ' + token)
@@ -48,7 +60,7 @@ function App() {
       axios.get(`http://localhost:8000/todos_data`, { headers: { Authorization: `Bearer ${token}` } })
         .then(res => {
           const todo_data = res.data
-          console.log(todo_data)
+          // console.log(todo_data)
           setTodos(todo_data)
         })
     }
@@ -68,7 +80,7 @@ function App() {
               <Link to='/all'>All</Link>
             </li>
             <li>
-              <Link to='/login'>Login</Link>
+              {(!token) ? <Link to='/login'>Login</Link> : <Link to='/logout' style={{ textDecoration: 'underline' }} onClick={logout}>Logout</Link>}
             </li>
             <li>
               <Link to='/register'>Register</Link>
@@ -77,19 +89,22 @@ function App() {
         </nav>
         <Switch>
           <Route path='/todos'>
-            <Todos type='Not Done' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />
+            {processRedirect(<Todos type='Not Done' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />)}
           </Route>
           <Route path='/done'>
-            <Todos type='Done' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />
+            {processRedirect(<Todos type='Done' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />)}
           </Route>
           <Route path='/all'>
-            <Todos type='' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />
+            {processRedirect(<Todos type='' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />)}
           </Route>
           <Route path='/login'>
             <Login setToken={setToken} setUsername={setUsername} />
           </Route>
           <Route path='/register'>
             <Register />
+          </Route>
+          <Route path='/logout'>
+            <Redirect to='/login' />
           </Route>
         </Switch>
       </div>
