@@ -11,6 +11,7 @@ import Todos from './Todos'
 import Login from './Login'
 import Register from './Register'
 import './App.css'
+import useCookie from './useCookie'
 // const sendTodos = (todosArr) => {
 //   axios.post(`http://localhost:8000/todos_data`, todosArr)
 //     .then(res => {
@@ -27,8 +28,11 @@ const sendNewTodo = (todo, token) => {
 }
 function App() {
   const [todos, setTodos] = useState([])
-  const [token, setToken] = useState('')
+  const [cookie, setCookie] = useCookie('todoCookie', '')
+  const [token, setToken] = useState((cookie) ? cookie : '')
   const [username, setUsername] = useState(null)
+
+  console.log(cookie)
 
   const markDone = (id, token) => {
     return () => {
@@ -47,6 +51,7 @@ function App() {
   const logout = () => {
     setToken('')
     setTodos([])
+    setCookie('')
   }
   const processRedirect = (input) => {
     // console.log(token)
@@ -56,15 +61,12 @@ function App() {
     return input
   }
   useEffect(() => {
-    // console.log('token ' + token)
-    if (token !== '') {
-      axios.get(`http://localhost:8000/todos_data`, { headers: { Authorization: `Bearer ${token}` } })
-        .then(res => {
-          const todo_data = res.data
-          // console.log(todo_data)
-          setTodos(todo_data)
-        })
-    }
+    axios.get(`http://localhost:8000/todos_data`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => {
+        const todo_data = res.data
+        // console.log(todo_data)
+        setTodos(todo_data)
+      })
   }, [token])
   return (
     <Router>
@@ -100,7 +102,7 @@ function App() {
               {processRedirect(<Todos type='' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />)}
             </Route>
             <Route path='/login'>
-              <Login setToken={setToken} setUsername={setUsername} />
+              <Login setToken={setToken} setUsername={setUsername} setCookie={setCookie} />
             </Route>
             <Route path='/register'>
               <Register />
@@ -115,4 +117,7 @@ function App() {
   );
 }
 
+{/* <CookiesProvider>
+<CookieHandler token={token} setToken={setToken} />
+</CookiesProvider> */}
 export default App;

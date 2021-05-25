@@ -9,13 +9,16 @@ const Todo = require('../Models').Todo
 
 router.get('/todos_data', (req, res) => {
     const authorization = req.header('Authorization') || ''
-    // console.log('Getting auth from :')
-    // console.log(authorization)
+    console.log('Getting auth from :')
     const [type, token] = authorization.split(' ')
+    console.log(token)
+    if (!token) {
+        return
+    }
     if (type === 'Bearer' && jwt.verify(token, key)) {
-        // console.log('Verified token')
+        console.log('Verified token')
         const payload = jwt.decode(token, key)
-        // console.log('User id: ' + payload._id)
+        console.log('User id: ' + payload._id)
         User.findOne({ _id: payload._id }, (err, user) => {
             if (err) return res.status(500).send(err)
             if (!user) return res.status(400).send('not a valid user')
@@ -24,6 +27,21 @@ router.get('/todos_data', (req, res) => {
                 res.json(todos)
             })
         })
+    } else {
+        return res.status(400).send('unauthorized')
+    }
+})
+
+router.get('/user_id', (req, res) => {
+    const authorization = req.header('Authorization') || ''
+    // console.log('Getting auth from :')
+    // console.log(authorization)
+    const [type, token] = authorization.split(' ')
+    if (type === 'Bearer' && jwt.verify(token, key)) {
+        // console.log('Verified token')
+        const payload = jwt.decode(token, key)
+        // console.log('User id: ' + payload._id)
+        res.status(200).send(payload._id)
     } else {
         return res.status(400).send('unauthorized')
     }
