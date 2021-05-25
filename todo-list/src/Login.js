@@ -30,7 +30,7 @@ function Login(props) {
     }
     return (
         <div>
-            <h5>Login</h5>
+            <h1 id='title'>Login</h1>
             <form onSubmit={handleSubmit}>
                 <input type="text" onChange={handleUsernameChange} required placeholder="username" />
                 <input type="password" onChange={handlePasswordChange} required placeholder="***" />

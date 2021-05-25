@@ -41,12 +41,14 @@ function Register() {
     return (
         // minlength="8"
         <div>
-            <h5>Register</h5>
+            <h1 id='title'>Register</h1>
             <form onSubmit={handleSubmit}>
-                <input type="text" onChange={handleUsernameChange} placeholder="username" />
-                <input type="password" onChange={handlePasswordChange} placeholder="password" />
-                <input type="password" onChange={handleVPasswordChange} placeholder="re-type password" />
-                <button type="submit" disabled={!passwordsMatch}>Register!</button>
+                <div id='registration'>
+                    <input type="text" onChange={handleUsernameChange} placeholder="username" />
+                    <input type="password" onChange={handlePasswordChange} placeholder="password" />
+                    <input type="password" onChange={handleVPasswordChange} placeholder="re-type password" />
+                    <button type="submit" disabled={!passwordsMatch}>Register!</button>
+                </div>
             </form>
 
         </div>

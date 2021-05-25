@@ -39,18 +39,20 @@ const NewTodo = (props) => {
         })
     }
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    onChange={handleChange}
-                    placeholder="Enter new todo"
-                    value={newTodo.text}
-                    name="newTodo"
-                    id="newTodoInput"
-                />
-                <button type="submit">Submit</button>
-            </form>
+        <div id="newTodo">
+            <div>
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        onChange={handleChange}
+                        placeholder="Enter new todo"
+                        value={newTodo.text}
+                        name="newTodo"
+                        id="newTodoInput"
+                    />
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
         </div>
     )
 }

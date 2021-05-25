@@ -20,7 +20,9 @@ const Todos = (props) => {
     // console.log(todosCopy)
     return (
         <div>
-            <h1>{(type) ? type : 'All'}</h1>
+            <div id='title'>
+                <h1>{(type) ? type : 'All'}</h1>
+            </div>
             <ul>
                 {todos.map((todo, index) => {
                     return (<Todo

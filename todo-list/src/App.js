@@ -10,6 +10,7 @@ import {
 import Todos from './Todos'
 import Login from './Login'
 import Register from './Register'
+import './App.css'
 // const sendTodos = (todosArr) => {
 //   axios.post(`http://localhost:8000/todos_data`, todosArr)
 //     .then(res => {
@@ -67,46 +68,48 @@ function App() {
   }, [token])
   return (
     <Router>
-      <div>
+      <div id="page">
         <nav>
-          <ul>
-            <li>
+          <div id="navList">
+            <div>
               <Link to='/todos'>Todos</Link>
-            </li>
-            <li>
+            </div>
+            <div>
               <Link to='/done'>Done</Link>
-            </li>
-            <li>
+            </div>
+            <div>
               <Link to='/all'>All</Link>
-            </li>
-            <li>
+            </div>
+            <div>
               {(!token) ? <Link to='/login'>Login</Link> : <Link to='/logout' style={{ textDecoration: 'underline' }} onClick={logout}>Logout</Link>}
-            </li>
-            <li>
+            </div>
+            <div>
               <Link to='/register'>Register</Link>
-            </li>
-          </ul>
+            </div>
+          </div>
         </nav>
-        <Switch>
-          <Route path='/todos'>
-            {processRedirect(<Todos type='Not Done' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />)}
-          </Route>
-          <Route path='/done'>
-            {processRedirect(<Todos type='Done' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />)}
-          </Route>
-          <Route path='/all'>
-            {processRedirect(<Todos type='' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />)}
-          </Route>
-          <Route path='/login'>
-            <Login setToken={setToken} setUsername={setUsername} />
-          </Route>
-          <Route path='/register'>
-            <Register />
-          </Route>
-          <Route path='/logout'>
-            <Redirect to='/login' />
-          </Route>
-        </Switch>
+        <div id="display">
+          <Switch>
+            <Route path='/todos'>
+              {processRedirect(<Todos type='Not Done' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />)}
+            </Route>
+            <Route path='/done'>
+              {processRedirect(<Todos type='Done' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />)}
+            </Route>
+            <Route path='/all'>
+              {processRedirect(<Todos type='' token={token} sendNewTodo={sendNewTodo} todos={todos} setTodos={setTodos} markDone={markDone} username={username} />)}
+            </Route>
+            <Route path='/login'>
+              <Login setToken={setToken} setUsername={setUsername} />
+            </Route>
+            <Route path='/register'>
+              <Register />
+            </Route>
+            <Route path='/logout'>
+              <Redirect to='/login' />
+            </Route>
+          </Switch>
+        </div>
       </div>
     </Router>
   );
