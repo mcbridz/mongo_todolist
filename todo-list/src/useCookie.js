@@ -5,9 +5,9 @@ const getItem = key =>
         const item = currentCookie.split("=");
         const storedKey = item[0];
         const storedValue = item[1];
-        // console.log('FOUND COOKIE')
-        // console.log(storedKey)
-        // console.log(storedValue)
+        console.log('FOUND COOKIE')
+        console.log(storedKey)
+        console.log(storedValue)
 
         return key === storedKey ? decodeURIComponent(storedValue) : total;
     }, "");

@@ -8,7 +8,7 @@ function Login(props) {
     let setUsernameNow = props.setUsername
     const setToken = props.setToken
     let history = useHistory()
-    let setCookie = props.setCookie
+    const setCookie = props.setCookie
     const handleUsernameChange = (evt) => {
         let newUsername = evt.target.value
         setUsername(newUsername)
@@ -24,8 +24,8 @@ function Login(props) {
             password: password
         }).then((res) => {
             // console.log(res.data.token)
-            setToken(res.data.token)
             setCookie(res.data.token, 2)
+            setToken(res.data.token)
             setUsernameNow(username)
             history.push('/todos')
         })

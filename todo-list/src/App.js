@@ -61,12 +61,15 @@ function App() {
     return input
   }
   useEffect(() => {
-    axios.get(`http://localhost:8000/todos_data`, { headers: { Authorization: `Bearer ${token}` } })
-      .then(res => {
-        const todo_data = res.data
-        // console.log(todo_data)
-        setTodos(todo_data)
-      })
+    if (token) {
+      axios.get(`http://localhost:8000/todos_data`, { headers: { Authorization: `Bearer ${token}` } })
+        .then(res => {
+          console.log('useEffect triggered')
+          const todo_data = res.data
+          // console.log(todo_data)
+          setTodos(todo_data)
+        })
+    }
   }, [token])
   return (
     <Router>
@@ -116,8 +119,4 @@ function App() {
     </Router>
   );
 }
-
-{/* <CookiesProvider>
-<CookieHandler token={token} setToken={setToken} />
-</CookiesProvider> */}
 export default App;
