@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "mongo": "mongod --dbpath=./data",
     "watch-server": "nodemon manage.js",
-    "start": "node manage.js",
+    "start": "node manage.js && cd todo-list && npm i -g serve && serve -s build",
     "heroku-postbuild": "cd todo-list && npm i && npm run build"
   },
   "repository": {
