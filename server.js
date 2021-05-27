@@ -12,6 +12,7 @@ const protectedRoutes = require('./routes/protectedRoutes.js')
 app.use('/', protectedRoutes)
 const userRoutes = require('./routes/userRoutes')
 app.use('/', userRoutes)
+app.use(express.static(path.join(__dirname, 'todo-list/build')))
 
 
 module.exports = function (deps) {
