@@ -8,7 +8,7 @@
     "mongo": "mongod --dbpath=./data",
     "watch-server": "nodemon manage.js",
     "start": "node manage.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && npm run build"
+    "heroku-postbuild": "cd todo-list && npm i && npm run build"
   },
   "repository": {
     "type": "git",
