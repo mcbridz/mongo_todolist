@@ -1,7 +1,7 @@
 const User = require('../Models').User
 const express = require('express')
 const jwt = require('jsonwebtoken')
-const key = require('../secrets').key
+const key = process.env.KEY || require('../secrets').key
 
 const router = express.Router()
 
