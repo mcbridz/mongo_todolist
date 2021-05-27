@@ -36,7 +36,7 @@ router.post('/login', (req, res) => {
 })
 
 router.get('*', (req, res) => {
-    res.sendFile(path.join('../todo-list/build/index.html'))
+    res.sendFile(path.join(__dirname, '../todo-list/build/index.html'))
 })
 
 module.exports = router
