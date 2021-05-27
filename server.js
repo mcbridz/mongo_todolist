@@ -18,7 +18,7 @@ module.exports = function (deps) {
     const message_path = deps.MessagePath
     const port = deps.port
     const dbname = 'todo_data'
-    const url = 'mongodb://localhost/' + dbname
+    const url = process.env.MONGODB_URI || 'mongodb://localhost/' + dbname
 
     // const client = new MongoClient(url)
     const mongoose = require('mongoose')
