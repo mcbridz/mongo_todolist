@@ -8,7 +8,7 @@
     "mongo": "mongod --dbpath=./data",
     "watch-server": "nodemon manage.js",
     "start": "node manage.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && run build"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && npm run build"
   },
   "repository": {
     "type": "git",
@@ -32,5 +32,8 @@
     "react": "^17.0.2",
     "react-cookie": "^4.0.3",
     "react-router-dom": "^5.2.0"
+  },
+  "engines": {
+    "node": "14.16.1"
   }
 }
