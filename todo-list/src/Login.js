@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
+const URL = `${window.location.protocol}//${window.location.hostname}`
 
 function Login(props) {
     let [username, setUsername] = useState('')
@@ -19,7 +20,7 @@ function Login(props) {
     }
     const handleSubmit = (evt) => {
         evt.preventDefault()
-        axios.post('http://localhost:8000/login', {
+        axios.post(`${URL}/login`, {
             username: username,
             password: password
         }).then((res) => {

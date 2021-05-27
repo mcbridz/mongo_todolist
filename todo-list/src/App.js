@@ -18,10 +18,11 @@ import useCookie from './useCookie'
 //       console.log(res)
 //     })
 // }
+const URL = `${window.location.protocol}//${window.location.hostname}`
 const sendNewTodo = (todo, token) => {
   console.log('Sending New Todo')
   console.log(todo)
-  axios.post(`http://localhost:8000/new_todo`, todo, { headers: { Authorization: `Bearer ${token}` } })
+  axios.post(`${URL}/new_todo`, todo, { headers: { Authorization: `Bearer ${token}` } })
     .then(res => {
       console.log(res)
     })
@@ -37,7 +38,7 @@ function App() {
   const markDone = (id, token) => {
     return () => {
       // console.log(id)
-      axios.post(`http://localhost:8000/mark_done`, { id: id }, { headers: { Authorization: `Bearer ${token}` } })
+      axios.post(`${URL}/mark_done`, { id: id }, { headers: { Authorization: `Bearer ${token}` } })
         .then(res => {
           console.log(res)
           todos[id].done = true
@@ -62,7 +63,7 @@ function App() {
   }
   useEffect(() => {
     if (token) {
-      axios.get(`http://localhost:8000/todos_data`, { headers: { Authorization: `Bearer ${token}` } })
+      axios.get(`${URL}/todos_data`, { headers: { Authorization: `Bearer ${token}` } })
         .then(res => {
           console.log('useEffect triggered')
           const todo_data = res.data
