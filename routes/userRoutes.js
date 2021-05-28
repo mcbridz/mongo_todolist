@@ -35,7 +35,8 @@ router.post('/login', (req, res) => {
     })
 })
 
-router.get('*', (req, res) => {
+router.get('/', (req, res) => {
+    console.log('Triggered sendFile...')
     res.sendFile(path.join(__dirname, '../todo-list/build/index.html'))
 })
 
