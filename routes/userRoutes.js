@@ -9,9 +9,10 @@ const router = express.Router()
 router.post('/register', (req, res) => {
     console.log(`Looking for user ${req.body.username}`)
     User.findOne({ username: req.body.username }, async (err, userExists) => {
+        console.log('finished searching for username')
         if (err) return res.status(500).send(err)
         if (userExists) return res.status(400).send('username already exists')
-
+        console.log('creating user')
         const user = await User.signup(req.body.username, req.body.password)
         res.status(201).send(user.sanitize())
     })
@@ -35,8 +36,10 @@ router.post('/login', (req, res) => {
     })
 })
 
-router.get('/', (req, res) => {
+router.get('/*', (req, res) => {
     console.log('Triggered sendFile...')
+    console.log('Current __dirname: ')
+    console.log(__dirname)
     res.sendFile(path.join(__dirname, '../todo-list/build/index.html'))
 })
 
