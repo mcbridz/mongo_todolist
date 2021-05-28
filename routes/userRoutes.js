@@ -36,7 +36,7 @@ router.post('/login', (req, res) => {
     })
 })
 
-router.get('/*', (req, res) => {
+router.get('/', (req, res) => {
     console.log('Triggered sendFile...')
     console.log('Current __dirname: ')
     console.log(__dirname)
