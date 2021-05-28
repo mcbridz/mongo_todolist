@@ -1,5 +1,6 @@
 {
   "name": "todo-list",
+  "homepage": "https://mcbridz-todo-list.herokuapp.com/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
