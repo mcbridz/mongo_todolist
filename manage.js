@@ -5,4 +5,4 @@ const server = require('./server')({ dataPath: DATA_PATH, port: port })
 
 server.listen(port)
 
-console.log('server listening on port: ' + port)
+console.log('server listening on port: ' + port + '\n' + 'dir: ' + __dirname)
