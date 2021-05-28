@@ -1,5 +1,7 @@
 {
   "name": "mongo_todolist",
+  "homepage": "https://mcbridz-todo-list.herokuapp.com/",
+  
   "version": "1.0.0",
   "description": "Database not included, project is coded to place the dbpath on './data'.",
   "main": "index.js",
@@ -19,7 +21,6 @@
   "bugs": {
     "url": "https://github.com/mcbridz/mongo_todolist/issues"
   },
-  "homepage": "https://github.com/mcbridz/mongo_todolist#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
